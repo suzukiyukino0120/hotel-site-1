@@ -1,0 +1,10 @@
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (1,'1','S','0','0',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (2,'1','S','1','0',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (3,'0','A','0','0',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (4,'0','A','1','0',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (5,'0','A','0','1',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (6,'0','A','1','1',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (7,'1','A','0','0',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (8,'1','A','1','0',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (9,'1','A','0','1',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO ROOM_MST (room_id,room_type,room_rank,smoking_type,bathroom_type,guest_capacity,create_user,create_date,update_user,update_date,del_flg) VALUES (10,'1','A','1','1',4,0,'2023/04/05',0,'2023/04/05','0');

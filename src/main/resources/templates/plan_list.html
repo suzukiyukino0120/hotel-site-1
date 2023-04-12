@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/common.css}" />
+<title>プラン検索</title>
+</head>
+<body>
+<form action="" method="post">
+<table class="search">
+	<tr>
+		<th>食事</th>
+		<td><div id="mealType"></div></td>
+	</tr>
+	<tr>
+		<th>和室・洋室</th>
+		<td><div id="roomType"></div></td>
+	</tr>
+	<tr>
+		<th>グレード</th>
+		<td><div id="roomRank"></div></td>
+	</tr>
+	<tr>
+		<th>禁煙・喫煙</th>
+		<td><div id="smokingType"></div></td>
+	</tr>
+	<tr>
+		<th>客室露天風呂</th>
+		<td><div id="bathroomType"></div></td>
+	</tr>
+	<tr>
+		<th>チェックイン日付～チェックアウト日付</th>
+		<td><div class="row">
+			<div class="col"><input type="date" name="startDate" class="form-control" id="startDate"></div>
+			～
+			<div class="col"><input type="date" name="endDate" class="form-control" id="endDate"></div>
+		</div></td>
+	</tr>
+	<tr>
+		<th>宿泊人数</th>
+		<td><div id="guestCapacity"></div></td>
+	</tr>
+</table>
+<div class="mgn"><button id="search_plan" class="btn btn-search" type="button">検索する</button></div>
+</form>
+<table class="plan"><tbody id="plan_list"></tbody></table>
+
+<script>
+//検索条件欄の作成
+window.onload = function(){
+	$.ajax({
+		url : 'http://localhost:8080/plan/form',
+		type : 'GET',
+		dataType : 'json'
+	}).done(function(data) {
+		const item = data["form"];
+		//食事
+		var mealType_html = "";
+		var mealType = item["mealType"];
+		console.log(mealType);
+		for(var k in mealType){
+			mealType_html +='<input class="form-check-input" type="checkbox" id="mealType'+mealType[k]+'" name="mealType" value="'+mealType[k]+'">';
+			mealType_html += '<label for="mealType'+mealType[k]+'">'+k+'</label>　　';				
+		}
+		$('#mealType').append(mealType_html);
+		
+		//和室・洋室
+		var roomType_html = "";
+		var roomType = item["roomType"];
+		for(var k in roomType){
+			roomType_html +='<input class="form-check-input" type="checkbox" id="roomType'+roomType[k]+'" name="roomType" value="'+roomType[k]+'">';
+			roomType_html += '<label for="roomType'+roomType[k]+'">'+k+'</label>　　';				
+		}
+		$('#roomType').append(roomType_html);
+		
+		//部屋グレード
+		var roomRank_html = "";
+		var roomRank = item["roomRank"];
+		for(var k in roomRank){
+			roomRank_html +='<input class="form-check-input" type="checkbox" id="roomRank'+roomRank[k]+'" name="roomRank" value="'+roomRank[k]+'">';
+			roomRank_html += '<label for="roomRank'+roomRank[k]+'">'+k+'</label>　　';				
+		}
+		$('#roomRank').append(roomRank_html);
+		
+		//禁煙・喫煙
+		var smokingType_html = "";
+		var smokingType = item["smokingType"];
+		for(var k in smokingType){
+			smokingType_html +='<input class="form-check-input" type="checkbox" id="smokingType'+smokingType[k]+'" name="smokingType" value="'+smokingType[k]+'">';
+			smokingType_html += '<label for="smokingType'+smokingType[k]+'">'+k+'</label>　　';				
+		}
+		$('#smokingType').append(smokingType_html);
+		
+		//客室露天風呂
+		var bathroomType_html = "";
+		var bathroomType = item["bathroomType"];
+		for(var k in bathroomType){
+			bathroomType_html +='<input class="form-check-input" type="checkbox" id="bathroomType'+bathroomType[k]+'" name="bathroomType" value="'+bathroomType[k]+'">';
+			bathroomType_html += '<label for="bathroomType'+bathroomType[k]+'">'+k+'</label>　　';				
+		}
+		$('#bathroomType').append(bathroomType_html);
+		
+		//宿泊人数
+		var guestCapacity_html = '<select class="form-select" aria-label="Default select example" name="guestCapacity" id="selected">';
+		var guestCapacity = item["guestCapacity"];
+		for(var k in guestCapacity){
+			for(let i =1; i<=guestCapacity[k]; i++){
+			guestCapacity_html +='<option value='+i+'>'+i+'</option>"';				
+			}
+		}
+		guestCapacity_html +='</select>'
+		$('#guestCapacity').append(guestCapacity_html);
+	
+		//チェックイン日（初期値：今日の日付）
+    	var today = new Date();
+    	today.setDate(today.getDate());
+    	var yyyy = today.getFullYear();
+    	var mm = ("0"+(today.getMonth()+1)).slice(-2);
+    	var dd = ("0"+today.getDate()).slice(-2);
+    	document.getElementById("startDate").value=yyyy+'-'+mm+'-'+dd;
+    	
+    	//チェックアウト日（初期値：明日の日付）
+	    var tomorrow = new Date();
+	    tomorrow.setDate(tomorrow.getDate()+1); //翌日の日付を取得
+	    var yyyy = tomorrow.getFullYear();
+	    var mm = ("0"+(tomorrow.getMonth()+1)).slice(-2);
+	    var dd = ("0"+tomorrow.getDate()).slice(-2);
+	    document.getElementById("endDate").value=yyyy+'-'+mm+'-'+dd;
+	
+	});
+}
+
+//検索
+window.addEventListener('DOMContentLoaded', function(){
+$('#search_plan').on('click',function(){
+	//チェックイン・チェックアウト日付の入力必須
+	var checkinDate = $('#startDate').val();
+	var checkoutDate = $('#endDate').val()
+	if(checkinDate == "" || checkoutDate == ""){
+		alert("チェックイン日付とチェックアウト日付を入力してください。"); 
+	}
+	
+	//食事
+	var mealTypeVal = []
+	$('input[name="mealType"]:checked').each(function() {
+	      mealTypeVal.push( $(this).val() ); // 配列に値を追加
+	  });
+	
+	//和室・洋室
+	var roomTypeVal = []
+	$('input[name="roomType"]:checked').each(function() {
+	      roomTypeVal.push( $(this).val() ); // 配列に値を追加
+	  });
+	
+	//部屋グレード
+	var roomRankVal = []
+	$('input[name="roomRank"]:checked').each(function() {
+	      roomRankVal.push( $(this).val() ); // 配列に値を追加
+	  });
+	
+	//禁煙・喫煙
+	var smokingTypeVal = []
+	$('input[name="smokingType"]:checked').each(function() {
+	      smokingTypeVal.push( $(this).val() ); // 配列に値を追加
+	  });
+	
+	//客室露天風呂
+	var bathroomTypeVal = []
+	$('input[name="bathroomType"]:checked').each(function() {
+	      bathroomTypeVal.push( $(this).val() ); // 配列に値を追加
+	  });
+	
+	var searchFormVal={
+			mealType:mealTypeVal,
+			roomType:roomTypeVal,
+			roomRank:roomRankVal,
+			smokingType:smokingTypeVal,
+			bathroomType:bathroomTypeVal,
+			startDate:checkinDate,
+			endDate:checkoutDate,
+			guestCapacity:$('#selected').val()
+	}
+	$.ajax({
+		url: 'http://localhost:8080/plan/search',
+      	type: 'post',
+      	data: JSON.stringify(searchFormVal), 
+      	contentType: 'application/json', 
+      	async: true  
+	}).done(function(data){
+		var list_html="";
+		$.each(data.planList, function(i, plan){
+		//宿泊費用の計算
+		var accommodation_fee =0;
+		$.each(plan.room.vacancyRoomCalender, function(j, vacancyRoomDate){
+		accommodation_fee += (vacancyRoomDate.roomFee + (plan.planFee*$('#selected').val()))/$('#selected').val();
+		});
+		var accommodation_fee_floor = Math.floor(accommodation_fee * 100) / 100;　//100円以下切り捨て
+		//検索結果一覧の生成
+		list_html += '<tr><th colspan="2">' +plan.planName+ '</th></tr>';
+		list_html += '<tr><td rowspan="5"><div class="img-width"><img src="/img/plans/'+plan.imagePhoto+'"></div></td>';
+		list_html += '<tr><td>'+plan.mealType+'　　'+plan.room.roomType+'　　'+plan.room.roomRank+'　　'+plan.room.smokingType+'　　'+plan.room.bathroomType+'</td>';
+		list_html += '<tr><td>'+plan.planContents+'</td></tr>';
+		list_html += '<tr><td>'+accommodation_fee_floor.toLocaleString()+'円/人</td></tr>';
+		list_html += '<tr><td><button class="btn btn-vacancy-room" type="button">空室確認</button></td></tr>';
+		});
+		$('#plan_list').html(list_html);
+	});
+	
+});
+});
+	</script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+</body>
+</html>

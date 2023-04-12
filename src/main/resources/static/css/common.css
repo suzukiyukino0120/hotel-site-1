@@ -1,0 +1,99 @@
+body {
+  width: 100%;
+}
+
+table.search {
+  border-collapse: collapse;
+  border-spacing: 5px;
+  padding: 0;
+  width: 80%;
+  margin: 1% auto auto auto;
+}
+
+table.search tr{
+  border-bottom: solid 2px white;
+}
+
+table.search th{
+  position: relative;
+  text-align: left;
+  width: 20%;
+  background-color: #87cefa;
+  color: white;
+  text-align: center;
+  padding: 1% 1% 1% 1%;
+}
+
+table.search td{
+  text-align: left;
+  width: 20%;
+  background-color: #f0f8ff;
+  padding: 1% 1% 1% 1%;
+}
+
+.form-select{
+	width: 30%
+}
+
+.form-control{
+	width: 100%
+}
+
+.btn-search{
+	width:100%;
+	margin: auto;
+	margin-left: auto;
+  	margin-right: auto;
+	color:black;
+	background-color:#fff352;
+	border-color:#fff352;
+}
+
+.mgn{
+	width:80%;
+	margin: 1% auto auto auto;
+}
+
+table.plan {
+  border-collapse: collapse;
+  border-spacing: 5px;
+  padding: 0;
+  width: 80%;
+  margin: 1% auto auto auto;
+  border-spacing: 10px 10px;
+}
+
+table.plan tr{
+  border-bottom: solid 2px white;
+}
+
+table.plan th{
+  position: relative;
+  text-align: left;
+  width: 20%;
+  background-color: #008080;
+  color: white;
+  text-align: center;
+  padding: 1% 1% 1% 1%;
+}
+
+table.plan td{
+  text-align: left;
+  width: 20%;
+  background-color: #f0f8ff;
+  padding: 1% 1% 1% 1%;
+}
+
+.btn-vacancy-room{
+	width:100%;
+	margin: auto;
+	margin-left: auto;
+  	margin-right: auto;
+	color:black;
+	background-color:#ffd700;
+	border-color:#ffd700;
+}
+
+.img-width img{
+	width:100%;
+}

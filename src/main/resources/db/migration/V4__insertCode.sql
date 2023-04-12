@@ -1,0 +1,14 @@
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('meal_type','素泊まり','0',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('meal_type','朝食のみ','1',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('meal_type','夕食のみ','2',3,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('meal_type','朝夕付','3',4,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('room_type','和室','0',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('room_type','洋室','1',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('room_rank','スウィート','S',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('room_rank','スタンダード','A',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('smoking_type','禁煙','0',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('smoking_type','喫煙','1',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('bathroom_type','客室露天風呂付','0',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('bathroom_type','客室露天風呂なし','1',2,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('date_type','平日','0',1,0,'2023/04/05',0,'2023/04/05','0');
+INSERT INTO CODE_MST (group_code,code_name,code,sort_number,create_user,create_date,update_user,update_date,del_flg) VALUES ('date_type','祝日','1',2,0,'2023/04/05',0,'2023/04/05','0');
