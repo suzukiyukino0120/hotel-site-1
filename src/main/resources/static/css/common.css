@@ -97,3 +97,73 @@ table.plan td{
 .img-width img{
 	width:100%;
 }
+
+table.vacancy-room {
+  border-collapse: collapse;
+  border-spacing: 5px;
+  padding: 0;
+  width: 80%;
+  margin: 1% auto auto auto;
+}
+
+table.vacancy-room tr{
+  border: solid 2px #a9a9a9;
+}
+
+table.vacancy-room th{
+  position: relative;
+  text-align: left;
+  width: 10%;
+  background-color: #90ee90;
+  color: white;
+  text-align: center;
+  padding: 1% 1% 1% 1%;
+  border: solid 2px #a9a9a9;
+}
+
+table.vacancy-room th.sunday{
+  position: relative;
+  text-align: left;
+  width: 10%;
+  background-color: #ff6347;
+  color: white;
+  text-align: center;
+  padding: 1% 1% 1% 1%;
+}
+
+table.vacancy-room th.saturday{
+  position: relative;
+  text-align: left;
+  width: 10%;
+  background-color: #87cefa;
+  color: white;
+  text-align: center;
+  padding: 1% 1% 1% 1%;
+}
+
+table.vacancy-room td{
+  text-align: center;
+  width: 10%;
+  background-color: #ffffff;
+  padding: 1% 1% 1% 1%;
+  border: solid 2px #a9a9a9;
+}
+
+table.vacancy-room td.sunday{
+  width: 10%;
+  background-color: #ffe4c4;
+  padding: 1% 1% 1% 1%;
+}
+table.vacancy-room td.saturday{
+  width: 10%;
+  background-color: #f0f8ff;
+  padding: 1% 1% 1% 1%;
+}
+
+.btn-dismiss{
+	width: 20%;
+}
+
+.month-form{
+	width: 20%;
+}

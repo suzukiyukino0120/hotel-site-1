@@ -2,12 +2,15 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/common.css}" />
 <title>プラン検索</title>
 </head>
 <body>
-<form action="" method="post">
 <table class="search">
 	<tr>
 		<th>食事</th>
@@ -43,8 +46,19 @@
 	</tr>
 </table>
 <div class="mgn"><button id="search_plan" class="btn btn-search" type="button">検索する</button></div>
-</form>
 <table class="plan"><tbody id="plan_list"></tbody></table>
+
+<!-- 空室確認モーダル -->
+<div class="modal fade" id="vacancy-room-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div th:insert="modal_vacancy_room :: fragment"></div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-dismiss" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 //検索条件欄の作成
@@ -202,15 +216,84 @@ $('#search_plan').on('click',function(){
 		list_html += '<tr><td>'+plan.mealType+'　　'+plan.room.roomType+'　　'+plan.room.roomRank+'　　'+plan.room.smokingType+'　　'+plan.room.bathroomType+'</td>';
 		list_html += '<tr><td>'+plan.planContents+'</td></tr>';
 		list_html += '<tr><td>'+accommodation_fee_floor.toLocaleString()+'円/人</td></tr>';
-		list_html += '<tr><td><button class="btn btn-vacancy-room" type="button">空室確認</button></td></tr>';
+		list_html += '<tr><td><button class="btn btn-vacancy-room" type="button" data-toggle="modal" data-target="#vacancy-room-modal" data-whatever="'+plan.planId+'">空室確認</button></td></tr>';
 		});
 		$('#plan_list').html(list_html);
 	});
 	
 });
+
+$('#vacancy-room-modal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) //モーダルを呼び出すときに使われたボタンを取得
+	  var planId = button.data('whatever') //data-planId の値を取得
+	//今月
+	  var today = new Date();
+	  if((today.getMonth()+1) <10){
+	  var month = today.getFullYear() +'-0'+ (today.getMonth()+1);
+	  }else{
+	  var month = today.getFullYear() +'-'+ (today.getMonth()+1);
+	  }
+	
+	  var modal = $(this)  //モーダルを取得
+	  modal.find('.modal-body input#planId').val(planId);
+	  modal.find('.modal-body input#month').val(month);
+	  console.log(modal.find('.modal-body input#planId').val());
+	  console.log(modal.find('.modal-body input#month').val());
+	  
+	});
+	
+$('#vacancy-room-modal').on('shown.bs.modal', function(){
+search();
+});	
+/*
+$(document).on('click','#reservation-btn',function(){
+			choiceDate();
 });
-	</script>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+/*
+var btn = document.querySelectorAll('#reservation-btn');
+for(var i=0; i< btn.length; i++){
+	btn[i].addEventListener('click',function(){
+		console.log(btn[i].val());
+	});
+}
+
+	var reservationBtn="";
+	$(document).on('focusout','#date',function(){
+		 reservationBtn= $(this).val();
+	console.log(reservationBtn);
+	})
+	var reservationBtn = document.getElementById("reservation-btn");
+		for(var i=0; i< reservationBtn.length; i++){
+		var btn =  reservationBtn.length[i].val();
+		});
+		}
+
+	console.log("aaa");
+});
+*/
+/**
+$(document).on('click','#reservation-btn',function(){
+	console.log("aaa");
+	$(document).on('focus','#date',function(){
+		var date= $(this).val();
+		console.log(date);
+	});
+	
+
+});
+*/
+/*	$(document).on('focus','#date',function(){
+		var date= $(this).val();
+		console.log(date);
+	});
+*/
+});
+</script>
+<!--jQueryを読み込み-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--jQuery UIを読み込み-->
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
