@@ -43,17 +43,30 @@ function search(){
 		
 		var vacancyRooms = calender.vacancyRooms;
 		if(vacancyRooms == 0){
-			var vacancyRooms_html = '満室';
+			var vacancyRooms_html = '<div style="color:red">満室</div>';
+			var accomodationFee_html = '';
 		}else{
 			var vacancyRooms_html = '<form method="get" id="reservation-form'+day+'"><input type="hidden" name="date" value="'+calender.date+'" id="date"><input type="hidden" name="planId" value="'+planIdVal+'"><button class="btn btn-sm btn-link" type="button" id="reservation-btn" onclick="choiceDate('+day+');">'+vacancyRooms+'室</button></form>';
+			var accomodationFee_html = calender.accomodationFee.toLocaleString()+'円';
+		}
+
+		var yesterday = new Date();
+		yesterday.setDate(yesterday.getDate()-1);
+	    var yyyy = yesterday.getFullYear();
+	    var mm = ("0"+(yesterday.getMonth()+1)).slice(-2);
+	    var dd = ("0"+yesterday.getDate()).slice(-2);
+	    var yesterdayVal=yyyy+'-'+mm+'-'+dd;
+		if(calender.date<yesterdayVal){
+			var vacancyRooms_html = '-';
+			var accomodationFee_html = '';
 		}
 			
 			if(i%7==0){
-			vacancyRoomCalender_html +='<tr><td class="sunday">'+day+'<br>'+vacancyRooms_html+'<br>'+calender.accomodationFee.toLocaleString()+'円';
+			vacancyRoomCalender_html +='<tr><td class="sunday">'+day+'<br>'+vacancyRooms_html+'<br>'+accomodationFee_html;
 			}else if(i%7==6){
-			vacancyRoomCalender_html +='<td class="saturday">'+day+'<br>'+vacancyRooms_html+'<br>'+calender.accomodationFee.toLocaleString()+'円';
+			vacancyRoomCalender_html +='<td class="saturday">'+day+'<br>'+vacancyRooms_html+'<br>'+accomodationFee_html;
 			}else{
-			vacancyRoomCalender_html +='<td>'+day+'<br>'+vacancyRooms_html+'<br>'+calender.accomodationFee.toLocaleString()+'円';
+			vacancyRoomCalender_html +='<td>'+day+'<br>'+vacancyRooms_html+'<br>'+accomodationFee_html;
 			}
 		}else{
 			if(i%7==0){

@@ -11,7 +11,7 @@
 <title>プラン検索</title>
 </head>
 <body>
-<table class="search">
+<table class="common">
 	<tr>
 		<th>食事</th>
 		<td><div id="mealType"></div></td>
@@ -45,7 +45,7 @@
 		<td><div id="guestCapacity"></div></td>
 	</tr>
 </table>
-<div class="mgn"><button id="search_plan" class="btn btn-search" type="button">検索する</button></div>
+<div class="mgn"><button id="search_plan" class="btn btn-common" type="button">検索する</button></div>
 <table class="plan"><tbody id="plan_list"></tbody></table>
 
 <!-- 空室確認モーダル -->
@@ -220,7 +220,6 @@ $('#search_plan').on('click',function(){
 		});
 		$('#plan_list').html(list_html);
 	});
-	
 });
 
 $('#vacancy-room-modal').on('show.bs.modal', function (event) {
@@ -237,56 +236,11 @@ $('#vacancy-room-modal').on('show.bs.modal', function (event) {
 	  var modal = $(this)  //モーダルを取得
 	  modal.find('.modal-body input#planId').val(planId);
 	  modal.find('.modal-body input#month').val(month);
-	  console.log(modal.find('.modal-body input#planId').val());
-	  console.log(modal.find('.modal-body input#month').val());
-	  
 	});
 	
 $('#vacancy-room-modal').on('shown.bs.modal', function(){
 search();
 });	
-/*
-$(document).on('click','#reservation-btn',function(){
-			choiceDate();
-});
-/*
-var btn = document.querySelectorAll('#reservation-btn');
-for(var i=0; i< btn.length; i++){
-	btn[i].addEventListener('click',function(){
-		console.log(btn[i].val());
-	});
-}
-
-	var reservationBtn="";
-	$(document).on('focusout','#date',function(){
-		 reservationBtn= $(this).val();
-	console.log(reservationBtn);
-	})
-	var reservationBtn = document.getElementById("reservation-btn");
-		for(var i=0; i< reservationBtn.length; i++){
-		var btn =  reservationBtn.length[i].val();
-		});
-		}
-
-	console.log("aaa");
-});
-*/
-/**
-$(document).on('click','#reservation-btn',function(){
-	console.log("aaa");
-	$(document).on('focus','#date',function(){
-		var date= $(this).val();
-		console.log(date);
-	});
-	
-
-});
-*/
-/*	$(document).on('focus','#date',function(){
-		var date= $(this).val();
-		console.log(date);
-	});
-*/
 });
 </script>
 <!--jQueryを読み込み-->

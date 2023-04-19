@@ -2,7 +2,7 @@ body {
   width: 100%;
 }
 
-table.search {
+table.common {
   border-collapse: collapse;
   border-spacing: 5px;
   padding: 0;
@@ -10,11 +10,11 @@ table.search {
   margin: 1% auto auto auto;
 }
 
-table.search tr{
+table.common tr{
   border-bottom: solid 2px white;
 }
 
-table.search th{
+table.common th{
   position: relative;
   text-align: left;
   width: 20%;
@@ -24,11 +24,21 @@ table.search th{
   padding: 1% 1% 1% 1%;
 }
 
-table.search td{
+table.common td{
   text-align: left;
   width: 20%;
   background-color: #f0f8ff;
   padding: 1% 1% 1% 1%;
+}
+
+.btn-common{
+	width:100%;
+	margin: auto;
+	margin-left: auto;
+  	margin-right: auto;
+	color:black;
+	background-color:#fff352;
+	border-color:#fff352;
 }
 
 .form-select{
@@ -39,19 +49,9 @@ table.search td{
 	width: 100%
 }
 
-.btn-search{
-	width:100%;
-	margin: auto;
-	margin-left: auto;
-  	margin-right: auto;
-	color:black;
-	background-color:#fff352;
-	border-color:#fff352;
-}
-
 .mgn{
 	width:80%;
-	margin: 1% auto auto auto;
+	margin: 1% auto 1% auto;
 }
 
 table.plan {
@@ -167,3 +167,34 @@ table.vacancy-room td.saturday{
 .month-form{
 	width: 20%;
 }
+
+.errorMsg{
+   box-sizing: border-box;
+   border-radius: 8px;
+   background-color: #fce3e3;
+   border: 2px solid #ba2020;
+   border-left-width: 8px;
+   color: #ba2020;
+   margin-top: 1%;
+   padding-top: 1%;
+   padding-bottom: 1%;
+   padding-left: 3%;
+   width: 100%;
+}
+
+.btn-next{
+	width:20%;
+	margin: 1% 0% 1% auto;
+	color:black;
+	background-color:#fff352;
+	border-color:#fff352;
+}
+
+.btn-back{
+	width:20%;
+	margin: 1% auto 1% 0%;
+	color:black;
+	background-color:#d3d3d3;
+	border-color:#d3d3d3;
+}
+
