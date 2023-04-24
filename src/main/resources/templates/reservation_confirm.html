@@ -13,31 +13,28 @@
 <!-- ヘッダー -->
 <div th:insert="common :: fragment-header"></div>
 
-<form th:action="@{/reservation/form/confirm}" method="post" th:object="${reservationForm}">
+<form th:action="@{/reservation/form/complete}" method="post" th:object="${reservationForm}">
 <div class="mgn">
 <div th:errors="${reservationForm}" class="errorMsg"></div>
-<div th:errors="*{name}" class="errorMsg"></div>
-<div th:errors="*{nameKana}" class="errorMsg"></div>
-<div th:errors="*{telephoneNumber}" class="errorMsg"></div>
-<div th:errors="*{checkinTime}" class="errorMsg"></div>
 </div>
+<div class="attentionMsg">この内容で予約してもよろしいですか？</div>
 <table class="common">
 <tr>
-	<th colspan="2">宿泊者の情報</th>
+	<th>宿泊者情報</th>
 </tr>
 <tr>
 	<td>
 	<div class="row">
 	<div class="col-3">宿泊者氏名：</div>
-	<div class="col-9"><input type="text" name="name" th:field="*{name}" class="form-control form-width"></div>
+	<div class="col-9" th:text=*{name}></div>
 	</div>
 	</td>
 </tr>
 <tr>
 	<td>
 	<div class="row">
-	<div class="col-3">ふりがな：</div>
-	<div class="col-9"><input type="text" name="kana" th:field="*{nameKana}" class="form-control form-width"></div>
+	<div class="col-3">宿泊者氏名ふりがな：</div>
+	<div class="col-9" th:text=*{nameKana}></div>
 	</div>
 	</td>
 </tr>
@@ -45,7 +42,7 @@
 	<td>
 	<div class="row">
 	<div class="col-3">宿泊者連絡先<br>（電話番号）：</div>
-	<div class="col-9"><input type="text" name="telephoneNumber" th:field="*{telephoneNumber}" class="form-control form-width"></div>
+	<div class="col-9" th:text=*{telephoneNumber}></div>
 	</div>
 	</td>
 </tr>
@@ -53,20 +50,10 @@
 	<td>
 	<div class="row">
 	<div class="col-3">チェックイン時刻：</div>
-	<div class="col-9">
-	<select class="form-select form-width" aria-label="Default select example" th:field="*{checkinTime}"><!-- 15-22時 -->
-    	<option th:each="i : ${#numbers.sequence(15,22)}"
-            th:value="${i}+':00'"
-            th:text="${i}+':00'">
-        </option>
-  	</select>
-	</div>
+	<div class="col-9" th:text=*{checkinTime}></div>
 	</div>
 	</td>
 </tr>
-</table>
-
-<table class="common">
 <tr>
 	<th>予約詳細</th>
 </tr>
@@ -82,7 +69,7 @@
 	<td>
 	<div class="row">
 	<div class="col-3">チェックイン：</div>
-	<div class="col-9" th:text=${session.checkinDate}></div>
+	<div class="col-9" th:text=*{checkinDate}></div>
 	</div>
 	</td>
 </tr>
@@ -90,7 +77,7 @@
 	<td>
 	<div class="row">
 	<div class="col-3">チェックアウト：</div>
-	<div class="col-9" th:text=${session.checkoutDate}></div>
+	<div class="col-9" th:text=*{checkoutDate}></div>
 	</div>
 	</td>
 </tr>
@@ -98,26 +85,27 @@
 	<td>
 	<div class="row">
 	<div class="col-3">宿泊人数：</div>
-	<div class="col-9" th:text=${session.guestNumber}></div>
+	<div class="col-9" th:text=*{guestNumber}></div>
 	</div>
 	</td>
 </tr>
-</table>
-
-<table class="common">
 <tr>
-	<th>料金について</th>
+	<th>料金</th>
 </tr>
 <tr>
 	<td>
 	<div class="row">
 	<div class="col-3">合計金額：</div>
-	<div class="col-9" th:text="${#numbers.formatInteger(session.totalPrice, 1, 'COMMA')} +'円'"></div>
+	<div class="col-9" th:text="${#numbers.formatInteger(reservationForm.totalPrice, 1, 'COMMA')} +'円'"></div>
 	</div>
 	</td>
 </tr>
 </table>
-	
+
+<input type="hidden" name="name" th:field="*{name}">	
+<input type="hidden" name="nameKana" th:field="*{nameKana}">	
+<input type="hidden" name="telephoneNumber" th:field="*{telephoneNumber}">	
+<input type="hidden" name="checkinTime" th:field="*{checkinTime}">	
 <input type="hidden" name="planId" th:field="*{planId}">
 <input type="hidden" name="checkinDate" th:field="*{checkinDate}">
 <input type="hidden" name="checkoutDate" th:field="*{checkoutDate}">
@@ -125,7 +113,7 @@
 <input type="hidden" name="totalPrice" th:field="*{totalPrice}">
 <div class="mgn row">
 	<button class="btn btn-back col-3" type="button" onclick="window.history.back();">戻る</button>
-	<button class="btn btn-next col-3" type="submit">次へ進む</button>
+	<button class="btn btn-complete col-3" type="submit">この内容で予約する</button>
 </div>
 </form>
 

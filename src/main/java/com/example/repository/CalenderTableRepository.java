@@ -49,4 +49,10 @@ public class CalenderTableRepository {
 				.addValue("planId", planId);
 		return template.query(sql,param,CALENDER_ROW_MAPPER);
 	}
+	
+	public void updateVacancyRoom(Integer roomId, LocalDate checkinDate, LocalDate checkoutDate) {
+		String sql ="UPDATE CALENDER_TABLE SET vacancy_rooms = vacancy_rooms+1 WHERE room_id = :roomId AND date BETWEEN :checkinDate AND (:checkoutDate +cast('-1 days' as INTERVAL))";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("roomId", roomId).addValue("checkinDate", checkinDate).addValue("checkoutDate", checkoutDate);
+		template.update(sql, param);
+	}
 }

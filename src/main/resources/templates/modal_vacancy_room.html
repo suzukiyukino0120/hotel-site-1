@@ -8,7 +8,7 @@
 <title>空室確認</title>
 </head>
 <body>
-<div th:fragment="fragment">
+<div th:fragment="fragment-vacancyRoomCalender">
 <div class="modal-body">
 <div class="month-form">
 <input type="month" name="month" id="month" class="form-control" onchange="search()">
@@ -50,13 +50,13 @@ function search(){
 			var accomodationFee_html = calender.accomodationFee.toLocaleString()+'円';
 		}
 
-		var yesterday = new Date();
-		yesterday.setDate(yesterday.getDate()-1);
-	    var yyyy = yesterday.getFullYear();
-	    var mm = ("0"+(yesterday.getMonth()+1)).slice(-2);
-	    var dd = ("0"+yesterday.getDate()).slice(-2);
-	    var yesterdayVal=yyyy+'-'+mm+'-'+dd;
-		if(calender.date<yesterdayVal){
+		var today = new Date();
+		today.setDate(today.getDate());
+	    var yyyy = today.getFullYear();
+	    var mm = ("0"+(today.getMonth()+1)).slice(-2);
+	    var dd = ("0"+today.getDate()).slice(-2);
+	    var todayVal=yyyy+'-'+mm+'-'+dd;
+		if(calender.date<todayVal){
 			var vacancyRooms_html = '-';
 			var accomodationFee_html = '';
 		}
@@ -85,7 +85,7 @@ function search(){
 
 function choiceDate(day){
 var formId = '#reservation-form'+day;
-$(formId).attr('action','http://localhost:8080/reservation/');
+$(formId).attr('action','http://localhost:8080/reservation/plan');
 $(formId).submit();
 }
 </script>

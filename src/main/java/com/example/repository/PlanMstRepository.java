@@ -30,7 +30,7 @@ public class PlanMstRepository {
 	=(rs) -> {
 		Map<Integer,Plan> planMap = new LinkedHashMap<Integer,Plan>();
 		Map<Integer,Room> roomMap = new LinkedHashMap<Integer,Room>();
-		Map<List<Object>,Calender> calenderMap = new LinkedHashMap<List<Object>,Calender>();
+		Map<Map<Date,Integer>,Calender> calenderMap = new LinkedHashMap<Map<Date,Integer>,Calender>();
 		Plan plan = null;		
 		Room room = null;		
 		Calender calender = null;
@@ -61,7 +61,12 @@ public class PlanMstRepository {
 				room.setVacancyRoomCalender(new ArrayList<Calender>());
 				roomMap.put(roomId, room);
 			}
-
+			
+			Date date = rs.getDate("date");
+			Map<Date,Integer> keyMap = new LinkedHashMap<Date,Integer>();
+			keyMap.put(date, roomId);
+			calender =  calenderMap.get(keyMap);
+			if(calender==null) {
 				calender = new Calender();
 				calender.setDate(rs.getDate("date"));
 				calender.setRoomId(rs.getInt("room_id"));
@@ -69,7 +74,9 @@ public class PlanMstRepository {
 				calender.setTotalRooms(rs.getInt("total_rooms"));
 				calender.setVacancyRooms(rs.getInt("vacancy_rooms"));
 				room.getVacancyRoomCalender().add(calender);
-				plan.setRoom(room);				
+				calenderMap.put(keyMap,calender);
+			}
+			plan.setRoom(room);
 		}
 		if(planMap.size()==0) {
 			return null;

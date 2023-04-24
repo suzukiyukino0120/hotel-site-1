@@ -11,6 +11,9 @@
 <title>プラン検索</title>
 </head>
 <body>
+<!-- ヘッダー -->
+<div th:insert="common :: fragment-header"></div>
+
 <table class="common">
 	<tr>
 		<th>食事</th>
@@ -52,7 +55,7 @@
 <div class="modal fade" id="vacancy-room-modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div th:insert="modal_vacancy_room :: fragment"></div>
+            <div th:insert="modal_vacancy_room :: fragment-vacancyRoomCalender"></div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-dismiss" data-dismiss="modal">閉じる</button>
             </div>
@@ -60,6 +63,8 @@
     </div>
 </div>
 
+<!-- フッター -->
+<div th:insert="common :: fragment-footer"></div>
 <script>
 //検索条件欄の作成
 window.onload = function(){
@@ -203,11 +208,14 @@ $('#search_plan').on('click',function(){
       	async: true  
 	}).done(function(data){
 		var list_html="";
+		console.log(data.planList);
 		$.each(data.planList, function(i, plan){
-		//宿泊費用の計算
-		var accommodation_fee =0;
+		//一人当たり宿泊費用の計算
+		var stayDays = plan.room.vacancyRoomCalender.length;
+		var accommodation_fee =plan.planFee*$('#selected').val()*stayDays;
 		$.each(plan.room.vacancyRoomCalender, function(j, vacancyRoomDate){
-		accommodation_fee += (vacancyRoomDate.roomFee + (plan.planFee*$('#selected').val()))/$('#selected').val();
+		accommodation_fee += vacancyRoomDate.roomFee;
+		console.log(plan.planId+':'+vacancyRoomDate.roomFee+':'+plan.planFee+':'+$('#selected').val()+':'+stayDays);
 		});
 		var accommodation_fee_floor = Math.floor(accommodation_fee * 100) / 100;　//100円以下切り捨て
 		//検索結果一覧の生成

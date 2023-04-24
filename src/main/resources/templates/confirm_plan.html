@@ -10,8 +10,10 @@
 <title>プランの確認</title>
 </head>
 <body>
+<!-- ヘッダー -->
+<div th:insert="common :: fragment-header"></div>
 
-<form th:action="@{/reservation/confirmPlan}" method="post" th:object="${confirmPlanForm}">
+<form th:action="@{/reservation/plan/confirm}" method="post" th:object="${confirmPlanForm}">
 <div class="mgn">
 <div th:errors="${confirmPlanForm}" class="errorMsg"></div>
 <div th:errors="*{checkoutDate}" class="errorMsg"></div>
@@ -37,7 +39,7 @@
 	<td>
 	<div class="row">
 	<div class="col-2">チェックアウト日：&nbsp;&nbsp;&nbsp;&nbsp;</div>
-	<div class="col-10"><input type="date" name="checkoutDate" th:field="*{checkoutDate}" class="form-select"></div>
+	<div class="col-10"><input type="date" name="checkoutDate" th:field="*{checkoutDate}" class="form-control form-width"></div>
 	</div>
 	</td>
 </tr>
@@ -62,10 +64,10 @@
 	<button class="btn btn-next col-3" type="submit">次へ進む</button>
 	</div>
 </form>
-<script>
 
+<!-- フッター -->
+<div th:insert="common :: fragment-footer"></div>
 
-</script>
 <!--jQueryを読み込み-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!--jQuery UIを読み込み-->
