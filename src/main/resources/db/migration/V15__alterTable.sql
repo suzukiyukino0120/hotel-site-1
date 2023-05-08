@@ -1,0 +1,1 @@
+alter table RESERVATION_TABLE rename column cancel_status to status;

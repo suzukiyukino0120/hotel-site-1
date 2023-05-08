@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <!-- Bootstrap CSS -->
@@ -13,11 +14,12 @@
 <!-- ヘッダー -->
 <div th:insert="common :: fragment-header"></div>
 
+<main>
 <form th:action="@{/reservation/form/complete}" method="post" th:object="${reservationForm}">
 <div class="mgn">
 <div th:errors="${reservationForm}" class="errorMsg"></div>
 </div>
-<div class="attentionMsg">この内容で予約してもよろしいですか？</div>
+<div class="mgn"><div class="attentionMsg">この内容で予約してもよろしいですか？</div></div>
 <table class="common">
 <tr>
 	<th>宿泊者情報</th>
@@ -116,7 +118,7 @@
 	<button class="btn btn-complete col-3" type="submit">この内容で予約する</button>
 </div>
 </form>
-
+</main>
 <!-- フッター -->
 <div th:insert="common :: fragment-footer"></div>
 

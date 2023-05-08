@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -23,7 +24,7 @@ function search(){
 	var monthVal =$('#month').val();
 	var planIdVal =$('#planId').val();
 		$.ajax({
-			url : 'http://localhost:8080/vacancyRoom/search',
+			url : 'http://localhost:8080/plan/vacancyRoom/search',
 			type : 'GET',
 			data: {
 		        month: monthVal,
@@ -85,7 +86,7 @@ function search(){
 
 function choiceDate(day){
 var formId = '#reservation-form'+day;
-$(formId).attr('action','http://localhost:8080/reservation/plan');
+$(formId).attr('action','http://localhost:8080/plan/confirm');
 $(formId).submit();
 }
 </script>

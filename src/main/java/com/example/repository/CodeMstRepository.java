@@ -28,7 +28,7 @@ public class CodeMstRepository {
 	};
 	
 	public List<Code> selectByGroupCode(String groupCode) {
-		String sql = "SELECT group_code, code_name, code, sort_number FROM CODE_MST WHERE group_code = :groupCode ORDER BY sort_number;";
+		String sql = "SELECT group_code, code_name, code, sort_number FROM CODE_MST WHERE group_code = :groupCode  AND del_flg='0' ORDER BY sort_number;";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("groupCode", groupCode);
 		return template.query(sql,param,CODE_ROW_MAPPER);
 	}

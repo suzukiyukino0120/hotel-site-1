@@ -13,4 +13,5 @@ public class Calender {
 	private Integer vacancyRooms;
 	private Integer roomFee;
 	private Integer accomodationFee;
+	
 }

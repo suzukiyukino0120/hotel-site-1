@@ -16,8 +16,8 @@ public class Reservation {
 	private Date checkoutDate;
 	private String checkinTime;
 	private Integer guestNumber;
-	private Integer planId;
-	private String cancelStatus;
+	private Plan plan;
+	private String status;
 	private Integer totalPrice;
 	
 	/**

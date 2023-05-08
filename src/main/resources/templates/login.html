@@ -8,15 +8,33 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/common.css}" />
-<title>予約完了</title>
+<title>ログイン</title>
 </head>
 <body>
 <!-- ヘッダー -->
 <div th:insert="common :: fragment-header"></div>
+
 <main>
-<div class="mgn"><div class="commonMsg">予約が完了しました。<br>
-<div th:text="'予約番号：'+${reservationId}"></div>
-</div></div>
+    <div th:if="${param.error}" > 
+        <div class="errorMsg">
+          ユーザーID、またはパスワードが違います。
+        </div>
+    </div>
+    <form method="post" th:action="@{/authenticate}">
+    <table class="login">
+    <tr>
+    <th>ユーザーID</th>
+    <td><input type="text" id="userId" name="userId" class="form-control"></td>
+    </tr>
+    <tr>
+    <th>パスワード</th>
+    <td><input type="password" id="password" name="password" class="form-control"></td>
+  	</tr>
+  	</table>
+	<div class="mgn-btn"><button class="btn btn-login" type="submit">ログインする</button></div>
+    </form>
+    <br>
+   <div class="center"><a th:href="@{/account/}">新規ユーザー登録はこちら</a></div>
 </main>
 <!-- フッター -->
 <div th:insert="common :: fragment-footer"></div>

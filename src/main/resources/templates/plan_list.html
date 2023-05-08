@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,26 +15,58 @@
 <!-- ヘッダー -->
 <div th:insert="common :: fragment-header"></div>
 
+<main>
+<form method="get" id="searchPlanForm">
 <table class="common">
 	<tr>
 		<th>食事</th>
-		<td><div id="mealType"></div></td>
+		<td>
+		<div class="row">
+		<div class="col" th:each="element : ${session.form.mealType}">
+		<input class="form-check-input" type="checkbox" th:id="'mealType'+${element.code}" name="mealType" th:value="${element.code}"><label th:for="'mealType'+${element.code}" th:text="${element.codeName}"></label>&nbsp;&nbsp;
+		</div>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>和室・洋室</th>
-		<td><div id="roomType"></div></td>
+		<td>
+		<div class="row">
+		<div class="col" th:each="element : ${session.form.roomType}">
+		<input class="form-check-input" type="checkbox" th:id="'roomType'+${element.code}" name="roomType" th:value="${element.code}"><label th:for="'roomType'+${element.code}" th:text="${element.codeName}"></label>&nbsp;&nbsp;
+		</div>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>グレード</th>
-		<td><div id="roomRank"></div></td>
+		<td>
+		<div class="row">
+		<div class="col" th:each="element : ${session.form.roomRank}">
+		<input class="form-check-input" type="checkbox" th:id="'roomRank'+${element.code}" name="roomRank" th:value="${element.code}"><label th:for="'roomRank'+${element.code}" th:text="${element.codeName}"></label>&nbsp;&nbsp;
+		</div>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>禁煙・喫煙</th>
-		<td><div id="smokingType"></div></td>
+		<td>
+		<div class="row">
+		<div class="col" th:each="element : ${session.form.smokingType}">
+		<input class="form-check-input" type="checkbox" th:id="'smokingType'+${element.code}" name="smokingType" th:value="${element.code}"><label th:for="'smokingType'+${element.code}" th:text="${element.codeName}"></label>&nbsp;&nbsp;
+		</div>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>客室露天風呂</th>
-		<td><div id="bathroomType"></div></td>
+		<td>
+		<div class="row">
+		<div class="col" th:each="element : ${session.form.bathroomType}">
+		<input class="form-check-input" type="checkbox" th:id="'bathroomType'+${element.code}" name="bathroomType" th:value="${element.code}"><label th:for="'bathroomType'+${element.code}" th:text="${element.codeName}"></label>&nbsp;&nbsp;
+		</div>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>チェックイン日付～チェックアウト日付</th>
@@ -45,10 +78,21 @@
 	</tr>
 	<tr>
 		<th>宿泊人数</th>
-		<td><div id="guestCapacity"></div></td>
+		<td>
+		<div class="form-width-mini">
+		<select class="form-select" aria-label="Default select example" id="guestCapacity" name="guestCapacity" th:each="element :${session.form.guestCapacity}">
+    	<option th:each="i : ${#numbers.sequence(1,element.code)}"
+            th:value="${i}"
+            th:text="${i}"></option>
+  		</select>
+  		</div>
+  		</td>
 	</tr>
 </table>
 <div class="mgn"><button id="search_plan" class="btn btn-common" type="button">検索する</button></div>
+</form>
+
+<div class="mgn-hit"><div id="hitNumber"></div></div>
 <table class="plan"><tbody id="plan_list"></tbody></table>
 
 <!-- 空室確認モーダル -->
@@ -62,75 +106,12 @@
         </div>
     </div>
 </div>
+</main>
 
 <!-- フッター -->
 <div th:insert="common :: fragment-footer"></div>
 <script>
-//検索条件欄の作成
 window.onload = function(){
-	$.ajax({
-		url : 'http://localhost:8080/plan/form',
-		type : 'GET',
-		dataType : 'json'
-	}).done(function(data) {
-		const item = data["form"];
-		//食事
-		var mealType_html = "";
-		var mealType = item["mealType"];
-		console.log(mealType);
-		for(var k in mealType){
-			mealType_html +='<input class="form-check-input" type="checkbox" id="mealType'+mealType[k]+'" name="mealType" value="'+mealType[k]+'">';
-			mealType_html += '<label for="mealType'+mealType[k]+'">'+k+'</label>　　';				
-		}
-		$('#mealType').append(mealType_html);
-		
-		//和室・洋室
-		var roomType_html = "";
-		var roomType = item["roomType"];
-		for(var k in roomType){
-			roomType_html +='<input class="form-check-input" type="checkbox" id="roomType'+roomType[k]+'" name="roomType" value="'+roomType[k]+'">';
-			roomType_html += '<label for="roomType'+roomType[k]+'">'+k+'</label>　　';				
-		}
-		$('#roomType').append(roomType_html);
-		
-		//部屋グレード
-		var roomRank_html = "";
-		var roomRank = item["roomRank"];
-		for(var k in roomRank){
-			roomRank_html +='<input class="form-check-input" type="checkbox" id="roomRank'+roomRank[k]+'" name="roomRank" value="'+roomRank[k]+'">';
-			roomRank_html += '<label for="roomRank'+roomRank[k]+'">'+k+'</label>　　';				
-		}
-		$('#roomRank').append(roomRank_html);
-		
-		//禁煙・喫煙
-		var smokingType_html = "";
-		var smokingType = item["smokingType"];
-		for(var k in smokingType){
-			smokingType_html +='<input class="form-check-input" type="checkbox" id="smokingType'+smokingType[k]+'" name="smokingType" value="'+smokingType[k]+'">';
-			smokingType_html += '<label for="smokingType'+smokingType[k]+'">'+k+'</label>　　';				
-		}
-		$('#smokingType').append(smokingType_html);
-		
-		//客室露天風呂
-		var bathroomType_html = "";
-		var bathroomType = item["bathroomType"];
-		for(var k in bathroomType){
-			bathroomType_html +='<input class="form-check-input" type="checkbox" id="bathroomType'+bathroomType[k]+'" name="bathroomType" value="'+bathroomType[k]+'">';
-			bathroomType_html += '<label for="bathroomType'+bathroomType[k]+'">'+k+'</label>　　';				
-		}
-		$('#bathroomType').append(bathroomType_html);
-		
-		//宿泊人数
-		var guestCapacity_html = '<select class="form-select" aria-label="Default select example" name="guestCapacity" id="selected">';
-		var guestCapacity = item["guestCapacity"];
-		for(var k in guestCapacity){
-			for(let i =1; i<=guestCapacity[k]; i++){
-			guestCapacity_html +='<option value='+i+'>'+i+'</option>"';				
-			}
-		}
-		guestCapacity_html +='</select>'
-		$('#guestCapacity').append(guestCapacity_html);
-	
 		//チェックイン日（初期値：今日の日付）
     	var today = new Date();
     	today.setDate(today.getDate());
@@ -146,8 +127,6 @@ window.onload = function(){
 	    var mm = ("0"+(tomorrow.getMonth()+1)).slice(-2);
 	    var dd = ("0"+tomorrow.getDate()).slice(-2);
 	    document.getElementById("endDate").value=yyyy+'-'+mm+'-'+dd;
-	
-	});
 }
 
 //検索
@@ -157,7 +136,10 @@ $('#search_plan').on('click',function(){
 	var checkinDate = $('#startDate').val();
 	var checkoutDate = $('#endDate').val()
 	if(checkinDate == "" || checkoutDate == ""){
-		alert("チェックイン日付とチェックアウト日付を入力してください。"); 
+		alert("チェックインとチェックアウトを入力してください。"); 
+	}
+	if(checkinDate >= checkoutDate){
+		alert("チェックアウトはチェックインの後の日付を入力してください。"); 
 	}
 	
 	//食事
@@ -198,41 +180,39 @@ $('#search_plan').on('click',function(){
 			bathroomType:bathroomTypeVal,
 			startDate:checkinDate,
 			endDate:checkoutDate,
-			guestCapacity:$('#selected').val()
+			guestCapacity:document.getElementById("guestCapacity").value
 	}
 	$.ajax({
 		url: 'http://localhost:8080/plan/search',
-      	type: 'post',
-      	data: JSON.stringify(searchFormVal), 
-      	contentType: 'application/json', 
-      	async: true  
+      	type: 'get',
+      	data: searchFormVal, 
+      	dataType : 'json'
 	}).done(function(data){
 		var list_html="";
-		console.log(data.planList);
 		$.each(data.planList, function(i, plan){
-		//一人当たり宿泊費用の計算
-		var stayDays = plan.room.vacancyRoomCalender.length;
-		var accommodation_fee =plan.planFee*$('#selected').val()*stayDays;
-		$.each(plan.room.vacancyRoomCalender, function(j, vacancyRoomDate){
-		accommodation_fee += vacancyRoomDate.roomFee;
-		console.log(plan.planId+':'+vacancyRoomDate.roomFee+':'+plan.planFee+':'+$('#selected').val()+':'+stayDays);
-		});
-		var accommodation_fee_floor = Math.floor(accommodation_fee * 100) / 100;　//100円以下切り捨て
 		//検索結果一覧の生成
 		list_html += '<tr><th colspan="2">' +plan.planName+ '</th></tr>';
 		list_html += '<tr><td rowspan="5"><div class="img-width"><img src="/img/plans/'+plan.imagePhoto+'"></div></td>';
 		list_html += '<tr><td>'+plan.mealType+'　　'+plan.room.roomType+'　　'+plan.room.roomRank+'　　'+plan.room.smokingType+'　　'+plan.room.bathroomType+'</td>';
 		list_html += '<tr><td>'+plan.planContents+'</td></tr>';
-		list_html += '<tr><td>'+accommodation_fee_floor.toLocaleString()+'円/人</td></tr>';
+		list_html += '<tr><td>'+plan.totalFeePerPerson+'円/人</td></tr>';
 		list_html += '<tr><td><button class="btn btn-vacancy-room" type="button" data-toggle="modal" data-target="#vacancy-room-modal" data-whatever="'+plan.planId+'">空室確認</button></td></tr>';
 		});
 		$('#plan_list').html(list_html);
+		
+		//検索ヒット件数
+		if(data.planList==null){
+			var hit_html='ヒット件数：　0件';
+		}else{
+		var hit_html='ヒット件数：　'+Object.keys(data.planList).length+'件';
+		}
+		$('#hitNumber').html(hit_html);
 	});
 });
 
 $('#vacancy-room-modal').on('show.bs.modal', function (event) {
 	  var button = $(event.relatedTarget) //モーダルを呼び出すときに使われたボタンを取得
-	  var planId = button.data('whatever') //data-planId の値を取得
+	  var planId = button.data('whatever') //data-whatever の値を取得
 	//今月
 	  var today = new Date();
 	  if((today.getMonth()+1) <10){

@@ -84,7 +84,7 @@ public class PlanMstRepository {
 		return new ArrayList<Plan>(planMap.values());
 	};
 	
-	private final static RowMapper<Plan> PLAN_ROW_MAPPER=
+	private final static RowMapper<Plan> PLAN_ROOM_ROW_MAPPER=
 			(rs,i) -> {
 				Plan plan = new Plan();
 				plan.setPlanId(rs.getInt("plan_id"));
@@ -104,6 +104,18 @@ public class PlanMstRepository {
 				plan.setRoom(room);
 				return plan;
 			};
+			
+			private final static RowMapper<Plan> PLAN_ROW_MAPPER=
+					(rs,i) -> {
+						Plan plan = new Plan();
+						plan.setPlanId(rs.getInt("plan_id"));
+						plan.setPlanName(rs.getString("plan_name"));
+						plan.setPlanContents(rs.getString("plan_contents"));
+						plan.setMealType(rs.getString("meal_type"));
+						plan.setPlanFee(rs.getInt("plan_fee"));
+						plan.setImagePhoto(rs.getString("image_photo"));
+						return plan;
+					};
 	
 	/**
 	 * 入力された検索条件でレコード取得
@@ -115,36 +127,14 @@ public class PlanMstRepository {
 					"p.plan_id, "+
 					"p.plan_name, "+
 					"p.plan_contents, "+
-					"CASE p.meal_type "+
-						"WHEN '0' THEN '素泊まり' "+
-						"WHEN '1' THEN '朝食付' "+
-						"WHEN '2' THEN '夕食付' "+
-						"WHEN '3' THEN '朝夕付' "+
-						"ELSE '登録なし' "+
-					"END as meal_type, "+
+					"p.meal_type, "+
 					"p.plan_fee, "+
 					"p.image_photo, "+
 					"r.room_id, "+
-					"CASE r.room_type "+
-					"WHEN '0' THEN '和室' "+
-					"WHEN '1' THEN '洋室' "+
-					"ELSE '登録なし' "+
-					"END as room_type, "+
-					"CASE r.bathroom_type "+
-					"WHEN '0' THEN '客室露天風呂付' "+
-					"WHEN '1' THEN '客室露天風呂なし' "+
-					"ELSE '登録なし' "+
-					"END as bathroom_type, "+
-					"CASE r.smoking_type "+
-					"WHEN '0' THEN '禁煙' "+
-					"WHEN '1' THEN '喫煙' "+
-					"ELSE '登録なし' "+
-					"END as smoking_type, "+
-					"CASE r.room_rank "+
-					"WHEN 'S' THEN 'スイート' "+
-					"WHEN 'A' THEN 'スタンダード' "+
-					"ELSE '登録なし' "+
-					"END as room_rank, "+
+					"r.room_type, "+
+					"r.bathroom_type, "+
+					"r.smoking_type, "+
+					"r.room_rank, "+
 					"r.guest_capacity, "+
 					"c.date, "+
 					"c.total_rooms, "+
@@ -152,6 +142,7 @@ public class PlanMstRepository {
 					"c.room_fee "+
 				"FROM PLAN_MST as p "+
 				"JOIN ROOM_MST as r ON p.room_id = r.room_id "+
+				"JOIN CODE_MST as cd ON p.meal_type=cd.code OR r.room_type=cd.code OR r.bathroom_type=cd.code OR r.smoking_type=cd.code OR r.room_rank=cd.code "+
 				"JOIN (SELECT date, "+
 							"total_rooms, "+
 							"vacancy_rooms, "+
@@ -159,16 +150,17 @@ public class PlanMstRepository {
 							"room_id "+ 
 						"FROM CALENDER_TABLE "+
 						"WHERE date BETWEEN :startDate AND (:endDate +cast('-1 days' as INTERVAL)) AND "+
-								"vacancy_rooms>0) as c ON r.room_id = c.room_id "+
+								"vacancy_rooms>0 AND del_flg='0') as c ON r.room_id = c.room_id "+
 				"WHERE r.guest_capacity >= :guestCapacity AND "+
 				"(select count(*) from CALENDER_TABLE "+
 				"where date BETWEEN :startDate AND (:endDate +cast('-1 days' as INTERVAL)) AND "+
-				"vacancy_rooms >0 and room_id= r.room_id) = cast(:endDate as date) - cast(:startDate as date)";
+				"vacancy_rooms >0 and room_id= r.room_id AND del_flg='0') = cast(:endDate as date) - cast(:startDate as date) AND "+
+				"p.del_flg='0' AND r.del_flg='0'";
 				
 				
 				//入力された検索条件に応じてwhere句を生成
 				//食事
-				if(form.getMealType().length!=0) {
+				if(form.getMealType()!=null) {
 					sql += "AND p.meal_type IN(";
 					for(int i=0; i<form.getMealType().length-1; i++) {
 						sql += "'" + form.getMealType()[i] + "',";
@@ -177,7 +169,7 @@ public class PlanMstRepository {
 				}
 				
 				//和室・洋室
-				if(form.getRoomType().length!=0) {
+				if(form.getRoomType()!=null) {
 					sql += "AND r.room_type IN(";
 					for(int i=0; i<form.getRoomType().length-1; i++) {
 						sql += "'" + form.getRoomType()[i] + "',";
@@ -186,7 +178,7 @@ public class PlanMstRepository {
 				}
 		
 				//部屋グレード
-				if(form.getRoomRank().length!=0) {
+				if(form.getRoomRank()!=null) {
 					sql += "AND r.room_rank IN(";
 					for(int i=0; i<form.getRoomRank().length-1; i++) {
 						sql += "'" + form.getRoomRank()[i] + "',";
@@ -195,7 +187,7 @@ public class PlanMstRepository {
 				}
 				
 				//客室露天風呂
-				if(form.getBathroomType().length!=0) {
+				if(form.getBathroomType()!=null) {
 					sql += "AND r.bathroom_type IN(";
 					for(int i=0; i<form.getBathroomType().length-1; i++) {
 						sql += "'" + form.getBathroomType()[i] + "',";
@@ -204,7 +196,7 @@ public class PlanMstRepository {
 				}
 				
 				//禁煙・喫煙
-				if(form.getSmokingType().length!=0) {
+				if(form.getSmokingType()!=null) {
 					sql += "AND r.smoking_type IN(";
 					for(int i=0; i<form.getSmokingType().length-1; i++) {
 						sql += "'" + form.getSmokingType()[i] + "',";
@@ -227,42 +219,20 @@ public class PlanMstRepository {
 						"p.plan_id, "+
 						"p.plan_name, "+
 						"p.plan_contents, "+
-						"CASE p.meal_type "+
-							"WHEN '0' THEN '素泊まり' "+
-							"WHEN '1' THEN '朝食付' "+
-							"WHEN '2' THEN '夕食付' "+
-							"WHEN '3' THEN '朝夕付' "+
-							"ELSE '登録なし' "+
-						"END as meal_type, "+
+						"p.meal_type, "+
 						"p.plan_fee, "+
 						"p.image_photo, "+
 						"r.room_id, "+
-						"CASE r.room_type "+
-						"WHEN '0' THEN '和室' "+
-						"WHEN '1' THEN '洋室' "+
-						"ELSE '登録なし' "+
-						"END as room_type, "+
-						"CASE r.bathroom_type "+
-						"WHEN '0' THEN '客室露天風呂付' "+
-						"WHEN '1' THEN '客室露天風呂なし' "+
-						"ELSE '登録なし' "+
-						"END as bathroom_type, "+
-						"CASE r.smoking_type "+
-						"WHEN '0' THEN '禁煙' "+
-						"WHEN '1' THEN '喫煙' "+
-						"ELSE '登録なし' "+
-						"END as smoking_type, "+
-						"CASE r.room_rank "+
-						"WHEN 'S' THEN 'スイート' "+
-						"WHEN 'A' THEN 'スタンダード' "+
-						"ELSE '登録なし' "+
-						"END as room_rank, "+
+						"r.room_type, "+
+						"r.bathroom_type, "+
+						"r.smoking_type, "+
+						"r.room_rank, "+
 						"r.guest_capacity "+
 					"FROM PLAN_MST as p "+
 					"JOIN ROOM_MST as r ON p.room_id = r.room_id "+
-					"WHERE p.plan_id = :planId";
+					"WHERE p.plan_id = :planId  AND p.del_flg='0' AND r.del_flg='0'";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("planId", planId);
-		return template.queryForObject(sql,param,PLAN_ROW_MAPPER);
+		return template.queryForObject(sql,param,PLAN_ROOM_ROW_MAPPER);
 	}
 	
 	/**
@@ -278,36 +248,14 @@ public class PlanMstRepository {
 					"p.plan_id, "+
 					"p.plan_name, "+
 					"p.plan_contents, "+
-					"CASE p.meal_type "+
-						"WHEN '0' THEN '素泊まり' "+
-						"WHEN '1' THEN '朝食付' "+
-						"WHEN '2' THEN '夕食付' "+
-						"WHEN '3' THEN '朝夕付' "+
-						"ELSE '登録なし' "+
-					"END as meal_type, "+
+					"p.meal_type, "+
 					"p.plan_fee, "+
 					"p.image_photo, "+
 					"r.room_id, "+
-					"CASE r.room_type "+
-					"WHEN '0' THEN '和室' "+
-					"WHEN '1' THEN '洋室' "+
-					"ELSE '登録なし' "+
-					"END as room_type, "+
-					"CASE r.bathroom_type "+
-					"WHEN '0' THEN '客室露天風呂付' "+
-					"WHEN '1' THEN '客室露天風呂なし' "+
-					"ELSE '登録なし' "+
-					"END as bathroom_type, "+
-					"CASE r.smoking_type "+
-					"WHEN '0' THEN '禁煙' "+
-					"WHEN '1' THEN '喫煙' "+
-					"ELSE '登録なし' "+
-					"END as smoking_type, "+
-					"CASE r.room_rank "+
-					"WHEN 'S' THEN 'スイート' "+
-					"WHEN 'A' THEN 'スタンダード' "+
-					"ELSE '登録なし' "+
-					"END as room_rank, "+
+					"r.room_type, "+
+					"r.bathroom_type, "+
+					"r.smoking_type, "+
+					"r.room_rank, "+
 					"r.guest_capacity, "+
 					"c.date, "+
 					"c.total_rooms, "+
@@ -322,11 +270,12 @@ public class PlanMstRepository {
 							"room_id "+ 
 						"FROM CALENDER_TABLE "+
 						"WHERE date BETWEEN :startDate AND (:endDate +cast('-1 days' as INTERVAL)) AND "+
-								"vacancy_rooms>0) as c ON r.room_id = c.room_id "+
+								"vacancy_rooms>0 AND del_flg='0') as c ON r.room_id = c.room_id "+
 				"WHERE p.plan_id= :planId AND "+
 				"(select count(*) from CALENDER_TABLE "+
 				"where date BETWEEN :startDate AND (:endDate +cast('-1 days' as INTERVAL)) AND "+
-				"vacancy_rooms >0 and room_id= r.room_id) = cast(:endDate as date) - cast(:startDate as date)";
+				"vacancy_rooms >0 and room_id= r.room_id AND del_flg='0') = cast(:endDate as date) - cast(:startDate as date) AND "+
+				"p.del_flg='0' AND r.del_flg='0'";
 				
 		SqlParameterSource param = new MapSqlParameterSource().addValue("planId", planId).addValue("startDate", startDate).addValue("endDate", endDate);
 		List<Plan> planList = template.query(sql, param, PLAN_RESULT_SET_EXTRACTOR);
@@ -335,6 +284,15 @@ public class PlanMstRepository {
 		}else {
 			return planList.get(0);
 		}
+	}
+	
+	/**
+	 * 全件検索
+	 * @return
+	 */
+	public List<Plan> selectAll(){
+		String sql="SELECT * FROM PLAN_MST WHERE del_flg='0'";
+		return template.query(sql, PLAN_ROW_MAPPER);
 	}
 
 }

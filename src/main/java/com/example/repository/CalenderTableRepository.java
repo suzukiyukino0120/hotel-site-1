@@ -40,9 +40,9 @@ public class CalenderTableRepository {
 				+ "(c.room_fee + p.plan_fee) as accomondation_fee "
 				+ "FROM PLAN_MST as p "
 				+ "JOIN (SELECT date, room_id, vacancy_rooms, room_fee "
-						+ "FROM CALENDER_TABLE WHERE date BETWEEN :startDate AND :endDate) as c "
+						+ "FROM CALENDER_TABLE WHERE date BETWEEN :startDate AND :endDate  AND del_flg='0') as c "
 				+ "ON p.room_id = c.room_id "
-				+"WHERE p.plan_id = :planId ORDER BY c.date";
+				+"WHERE p.plan_id = :planId  AND p.del_flg='0' ORDER BY c.date";
 		
 		SqlParameterSource param = new MapSqlParameterSource().addValue("startDate", startDate)
 				.addValue("endDate", endDate)
@@ -50,8 +50,14 @@ public class CalenderTableRepository {
 		return template.query(sql,param,CALENDER_ROW_MAPPER);
 	}
 	
+	/**
+	 * 空室状況を更新する
+	 * @param roomId
+	 * @param checkinDate
+	 * @param checkoutDate
+	 */
 	public void updateVacancyRoom(Integer roomId, LocalDate checkinDate, LocalDate checkoutDate) {
-		String sql ="UPDATE CALENDER_TABLE SET vacancy_rooms = vacancy_rooms+1 WHERE room_id = :roomId AND date BETWEEN :checkinDate AND (:checkoutDate +cast('-1 days' as INTERVAL))";
+		String sql ="UPDATE CALENDER_TABLE SET vacancy_rooms = vacancy_rooms-1 WHERE room_id = :roomId AND date BETWEEN :checkinDate AND (:checkoutDate +cast('-1 days' as INTERVAL))";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("roomId", roomId).addValue("checkinDate", checkinDate).addValue("checkoutDate", checkoutDate);
 		template.update(sql, param);
 	}

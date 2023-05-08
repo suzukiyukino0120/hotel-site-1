@@ -1,5 +1,7 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -28,8 +30,13 @@ public class RoomMstRepository {
 	};
 	
 	public Room selectRoomById(Integer roomId) {
-		String sql="SELECT * FROM ROOM_MST WHERE room_id = :roomId";
+		String sql="SELECT * FROM ROOM_MST WHERE room_id = :roomId AND del_flg='0'";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("roomId", roomId);
 		return template.queryForObject(sql,param,ROOM_ROW_MAPPER);
+	}
+	
+	public List<Room> selectAll(){
+		String sql="SELECT * FROM ROOM_MST WHERE del_flg='0'";
+		return template.query(sql,ROOM_ROW_MAPPER);
 	}
 }

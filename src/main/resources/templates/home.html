@@ -8,15 +8,16 @@
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/common.css}" />
-<title>予約完了</title>
+<title>Hotel.comトップページ</title>
 </head>
 <body>
 <!-- ヘッダー -->
 <div th:insert="common :: fragment-header"></div>
 <main>
-<div class="mgn"><div class="commonMsg">予約が完了しました。<br>
-<div th:text="'予約番号：'+${reservationId}"></div>
-</div></div>
+<div class="center">Hotel.comはシンプルなホテル宿泊予約サイトです。</div><br><br>
+<div class="center"><a th:href="@{/loginForm}">ログイン</a></div><br>
+<div class="center"><a th:href="@{/loginForm}">宿泊プラン検索</a></div><br><br>
+<div class="center"><a href="https://github.com/suzukiyukino0120/hotel-site-1">ソースコード</a></div>
 </main>
 <!-- フッター -->
 <div th:insert="common :: fragment-footer"></div>

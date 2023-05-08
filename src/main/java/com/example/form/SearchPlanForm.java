@@ -4,16 +4,18 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.example.validator.DateIntegrety;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
 @Data
+@DateIntegrety(startDate="checkinDate", endDate="checkoutDate")
 public class SearchPlanForm {
 	private String[] mealType;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate startDate;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
 	private String[] roomType;
 	private String[] roomRank;

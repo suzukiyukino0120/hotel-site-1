@@ -11,4 +11,6 @@ public class Plan {
 	private Integer planFee;
 	private Room room;
 	private String ImagePhoto;
+	private Integer totalFeePerPerson;
+	
 }
