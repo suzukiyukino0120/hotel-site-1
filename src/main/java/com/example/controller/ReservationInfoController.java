@@ -77,11 +77,17 @@ public class ReservationInfoController {
 	@PreAuthorize("hasRole('ROLE_SA')")
 	public String detailInfoView(@AuthenticationPrincipal AccountUserDetails accountUserDetails, Integer reservationId, Model model) {
 		Reservation reservationDetail=reservationService.searchReservationDetail(reservationId);
-		if(accountUserDetails.getUser().getAuthority().equals("S")) {
-			if(reservationDetail.getStatus().equals("0")||reservationDetail.getStatus().equals("1")) {
-			model.addAttribute("status", createFormService.createStatusForm(reservationDetail.getStatus()));
+		if(reservationDetail.getStatus().equals("0")||reservationDetail.getStatus().equals("1")) {
+			if(accountUserDetails.getUser().getAuthority().equals("S")) {
+			model.addAttribute("status", createFormService.createStatusFormByAdmin(reservationDetail.getStatus()));
 			}
 		}
+		if(reservationDetail.getStatus().equals("0")) {
+			if(accountUserDetails.getUser().getAuthority().equals("A")) {
+				model.addAttribute("status", createFormService.createStatusFormByUser(reservationDetail.getStatus()));
+			}
+		}
+		
 		List<Reservation> list=new ArrayList<>();
 		list.add(reservationDetail);
 		model.addAttribute("reservationDetail", reservationService.changeFromCodeToWord(list).get(0));//コード値から日本語に変換してからモデルに入れる
@@ -96,11 +102,16 @@ public class ReservationInfoController {
 	 * @return
 	 */
 	@RequestMapping("/updateStatus")
-	@PreAuthorize("hasRole('ROLE_S')")
-	public String updateStatus(Integer reservationId, String status, Model model) {
+	@PreAuthorize("hasRole('ROLE_SA')")
+	public String updateStatus(@AuthenticationPrincipal AccountUserDetails accountUserDetails,Integer reservationId, String status, Model model) {
 		reservationService.updateStatus(reservationId, status);
+		if(accountUserDetails.getUser().getAuthority().equals("S")) {
 		model.addAttribute("reservationList", reservationService.selectById(reservationId));
 		model.addAttribute("statusMsg", "状況を更新しました。（予約番号： "+reservationId+"）");
+		}
+		if(accountUserDetails.getUser().getAuthority().equals("A")) {
+		model.addAttribute("reservationList", reservationService.searchByReservationUser(accountUserDetails.getUser().getUserSeqNo()));
+		}
 		return "reservation_info";
 	}
 }

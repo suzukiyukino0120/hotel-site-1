@@ -73,11 +73,11 @@ public class CreateFormService {
 	}
 	
 	/**
-	 * ステータス更新フォームを生成する
+	 * 管理者用ステータス更新フォームを生成する
 	 * @param status
 	 * @return
 	 */
-	public List<Code> createStatusForm(String status){
+	public List<Code> createStatusFormByAdmin(String status){
 		List<Code> statusList=searchCodebyGroupCode("status");
 		Iterator<Code> it = statusList.iterator();
 		while(it.hasNext()){
@@ -96,5 +96,22 @@ public class CreateFormService {
 		return statusList;
 	}
 	
-	
+	/**
+	 * ユーザー用ステータス更新フォームを生成する
+	 * @param status
+	 * @return
+	 */
+	public List<Code> createStatusFormByUser(String status){
+		List<Code> statusList=searchCodebyGroupCode("status");
+		Iterator<Code> it = statusList.iterator();
+		while(it.hasNext()){
+			Code statusCode = it.next();
+			if(status.equals("0")) {
+				if(statusCode.getCode().equals("0")||statusCode.getCode().equals("1")||statusCode.getCode().equals("2")) {
+					it.remove();
+				}
+			}
+		}
+		return statusList;
+	}
 }

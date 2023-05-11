@@ -15,7 +15,7 @@
 <input type="month" name="month" id="month" class="form-control" onchange="search()">
 </div>
 <input type="hidden" name="planId" id="planId">
-
+※1泊のみした場合のおひとり当たりの料金です。
 <div id="vacancyRoomCalender"></div>
 </div>
 
@@ -24,7 +24,7 @@ function search(){
 	var monthVal =$('#month').val();
 	var planIdVal =$('#planId').val();
 		$.ajax({
-			url : 'http://localhost:8080/plan/vacancyRoom/search',
+			url : '/plan/vacancyRoom/search',
 			type : 'GET',
 			data: {
 		        month: monthVal,
@@ -86,7 +86,7 @@ function search(){
 
 function choiceDate(day){
 var formId = '#reservation-form'+day;
-$(formId).attr('action','http://localhost:8080/plan/confirm');
+$(formId).attr('action','/plan/confirm');
 $(formId).submit();
 }
 </script>

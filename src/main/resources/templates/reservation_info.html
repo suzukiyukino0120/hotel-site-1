@@ -183,7 +183,7 @@ $('#reservation-detail-modal').on('shown.bs.modal', function(event){
 	var button = $(event.relatedTarget)
 	var reservationId=button.data('whatever')
 	$.ajax({
-		url : 'http://localhost:8080/reservationInfo/detail',
+		url : '/reservationInfo/detail',
 		type : 'GET',
 		data: {
 	        reservationId: button.data('whatever')

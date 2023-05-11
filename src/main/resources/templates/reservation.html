@@ -56,14 +56,12 @@
 	<div class="row">
 	<div class="col-3">チェックイン時刻：</div>
 	<div class="col-9">
-	<div class="form-width-mini">
-	<select class="form-select form-width" aria-label="Default select example" th:field="*{checkinTime}"><!-- 15-22時 -->
+	<select class="form-select form-width-mini" aria-label="Default select example" th:field="*{checkinTime}"><!-- 15-22時 -->
     	<option th:each="i : ${#numbers.sequence(15,22)}"
             th:value="${i}+':00'"
             th:text="${i}+':00'">
         </option>
   	</select>
-	</div>
 	</div>
 	</div>
 	</td>

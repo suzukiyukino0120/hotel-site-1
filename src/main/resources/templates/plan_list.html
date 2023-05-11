@@ -183,7 +183,7 @@ $('#search_plan').on('click',function(){
 			guestCapacity:document.getElementById("guestCapacity").value
 	}
 	$.ajax({
-		url: 'http://localhost:8080/plan/search',
+		url: '/plan/search',
       	type: 'get',
       	data: searchFormVal, 
       	dataType : 'json'
@@ -192,10 +192,10 @@ $('#search_plan').on('click',function(){
 		$.each(data.planList, function(i, plan){
 		//検索結果一覧の生成
 		list_html += '<tr><th colspan="2">' +plan.planName+ '</th></tr>';
-		list_html += '<tr><td rowspan="5"><div class="img-width"><img src="/img/plans/'+plan.imagePhoto+'"></div></td>';
-		list_html += '<tr><td>'+plan.mealType+'　　'+plan.room.roomType+'　　'+plan.room.roomRank+'　　'+plan.room.smokingType+'　　'+plan.room.bathroomType+'</td>';
+		list_html += '<tr><td rowspan="4" class="col-5"><img src="/img/plans/'+plan.imagePhoto+'"></td>';
+		list_html += '<td>'+plan.mealType+'　　'+plan.room.roomType+'　　'+plan.room.roomRank+'　　'+plan.room.smokingType+'　　'+plan.room.bathroomType+'</td></tr>';
 		list_html += '<tr><td>'+plan.planContents+'</td></tr>';
-		list_html += '<tr><td>'+plan.totalFeePerPerson+'円/人</td></tr>';
+		list_html += '<tr><td>'+plan.totalFeePerPerson.toLocaleString()+'円/人</td></tr>';
 		list_html += '<tr><td><button class="btn btn-vacancy-room" type="button" data-toggle="modal" data-target="#vacancy-room-modal" data-whatever="'+plan.planId+'">空室確認</button></td></tr>';
 		});
 		$('#plan_list').html(list_html);

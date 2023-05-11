@@ -49,13 +49,11 @@
 	<td><div class="row">
 	<div class="col-2">宿泊人数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：&nbsp;&nbsp;&nbsp;&nbsp;</div>
 		<div class="col-10">
-		<div class="form-width-mini">
-		<select class="form-select" aria-label="Default select example" id="guestNumber" th:field="*{guestNumber}">
+		<select class="form-select form-width-mini" aria-label="Default select example" id="guestNumber" th:field="*{guestNumber}">
     	<option th:each="i : ${#numbers.sequence(1,session.guestCapacity)}"
             th:value="${i}"
             th:text="${i}"></option>
   		</select>
-  		</div>
   		</div>
   		</div>
   	</td>
