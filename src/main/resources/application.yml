@@ -1,6 +1,6 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://tAXzYcpSBjB18WD7URBrnGM2QeEJxcDq@dpg-che9tvd269v75d476rp0-a/hotel_6au5
+    url: jdbc:postgres://pghotel:tAXzYcpSBjB18WD7URBrnGM2QeEJxcDq@dpg-che9tvd269v75d476rp0-a/hotel_6au5
     username: pghotel
     password: tAXzYcpSBjB18WD7URBrnGM2QeEJxcDq
