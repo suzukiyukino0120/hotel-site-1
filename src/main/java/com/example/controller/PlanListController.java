@@ -19,19 +19,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.createForm.PlanSearchContents;
 import com.example.domain.Calender;
 import com.example.domain.Plan;
 import com.example.domain.Reservation;
-import com.example.domain.User;
 import com.example.form.ConfirmPlanForm;
-import com.example.form.ReservationForm;
 import com.example.form.SearchPlanForm;
 import com.example.service.CreateFormService;
 import com.example.service.SearchPlanService;
@@ -71,7 +66,7 @@ public class PlanListController {
 		session.setAttribute("form", createFormService.createSearchPlanForm());
 		return "plan_list";
 	}
-
+	
 	/**
 	 * プランを検索する
 	 * @param form
@@ -93,7 +88,7 @@ public class PlanListController {
 	 */
 	@GetMapping("/vacancyRoom/search")
 	@ResponseBody
-	public Map<String, List<Calender>> search(@RequestParam("month") String month,
+	public Map<String, List<Calender>> searchVacancyCalender(@RequestParam("month") String month,
             @RequestParam("planId") String planId){
 		Map <String, List<Calender>> map = new HashMap<>();
 		map.put("calenderList", vacancyRoomService.searchCalender(month, planId));
