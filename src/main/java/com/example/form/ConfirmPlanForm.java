@@ -12,7 +12,7 @@ import com.example.validator.DateIntegrety;
 import com.example.validator.VacancyRoomExists;
 
 @Data
-@VacancyRoomExists(id="planId", startDate="checkinDate", endDate="checkoutDate")
+@VacancyRoomExists(planId="planId", startDate="checkinDate", endDate="checkoutDate")
 @DateIntegrety(startDate="checkinDate", endDate="checkoutDate")
 public class ConfirmPlanForm {
 	private Integer planId;
